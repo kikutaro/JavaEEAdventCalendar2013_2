@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <flow-definition id="privilegesFlow">
+        
+        <initializer>#{membershipPrivilegesBean.startMembershipPrivileges()}</initializer>
+        <!-- 呼び出し元のフローから値を受け取る -->
+        <inbound-parameter>
+            <name>firstName</name>
+            <value>#{membershipPrivilegesBean.firstName}</value>
+        </inbound-parameter>
+        
+        <!-- フローIDとページ対応 -->
+        <view id="privilegesFlow">
+            <vdl-document>/META-INF/flows/membership/membershipPrivilege.xhtml</vdl-document>
+        </view>
+        
+        <!-- 会員登録フローに遷移し、値を渡す -->
+        <flow-call id="regFlow">
+            <flow-reference>
+                <flow-id>registrationFlow</flow-id>
+            </flow-reference>
+            <outbound-parameter>
+                <name>code</name>
+                <value>#{membershipPrivilegesBean.code}</value>
+            </outbound-parameter>
+        </flow-call>
+    </flow-definition>
+    
+</faces-config>
